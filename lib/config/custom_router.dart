@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/screens.dart';
+
 class CustomRouter {
   static Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -10,6 +12,8 @@ class CustomRouter {
           settings: RouteSettings(name: '/'),
           builder: (_) => Scaffold(),
         );
+      case SplashScreen.routeName:
+        return SplashScreen.route();
       default:
         return _errorRoute();
     }
