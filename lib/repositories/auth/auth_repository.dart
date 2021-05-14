@@ -5,6 +5,7 @@ import 'package:instagram_clone/config/paths.dart';
 import 'package:meta/meta.dart';
 
 import 'base_auth_repository.dart';
+import 'package:instagram_clone/models/models.dart';
 
 class AuthRepository extends BaseAuthRepository {
   final FirebaseFirestore _firebaseFirestore;
@@ -39,8 +40,11 @@ class AuthRepository extends BaseAuthRepository {
       });
 
       return user;
-    } on auth
-        .FirebaseAuthException catch (err) {} on PlatformException catch (err) {}
+    } on auth.FirebaseAuthException catch (err) {
+      throw Failure(code: err.code, message: err.message);
+    } on PlatformException catch (err) {
+      throw Failure(code: err.code, message: err.message);
+    }
   }
 
   @override
