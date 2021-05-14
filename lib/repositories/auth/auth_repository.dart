@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:instagram_clone/config/paths.dart';
 import 'package:meta/meta.dart';
 
 import 'base_auth_repository.dart';
@@ -30,7 +31,7 @@ class AuthRepository extends BaseAuthRepository {
 
       final user = credentail.user;
 
-      _firebaseFirestore.collection('users').doc(user.uid).set({
+      _firebaseFirestore.collection(Paths.users).doc(user.uid).set({
         'username': username,
         'email': email,
         'followers': 0,
