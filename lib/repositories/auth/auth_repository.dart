@@ -48,10 +48,19 @@ class AuthRepository extends BaseAuthRepository {
   }
 
   @override
-  Future<auth.User> loginWithEmailAndPassword(
-      {@required String email, @required String password}) {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
+  Future<auth.User> loginWithEmailAndPassword({
+    @required String email,
+    @required String password,
+  }) async {
+    try {
+      final credentials = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return credentials.user;
+    } on auth.FirebaseAuthException catch (err) {
+      throw Failure(code: err.code, message: err.message);
+    } on PlatformException catch (err) {
+      throw Failure(code: err.code, message: err.message);
+    }
   }
 
   @override
