@@ -13,55 +13,28 @@ class SplashScreen extends StatelessWidget {
     );
   }
 
-  //! Work-Around as BlocListener is not working here.
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async =>
           false, //Restricts the Users ability to pop the screen
-      child: BlocBuilder<AuthBloc, AuthState>(
+      child: BlocListener<AuthBloc, AuthState>(
         // Prevent listener from triggering if status did not change
-        buildWhen: (previousState, currentState) =>
+        listenWhen: (previousState, currentState) =>
             previousState.status != currentState.status,
-        builder: (context, state) {
-          if (state.status == AuthStatus.unauthenticated ||
-              state.status == AuthStatus.unknown) {
-            return LoginScreen();
+        listener: (context, state) {
+          if (state.status == AuthStatus.unauthenticated) {
+            return Navigator.of(context).pushNamed(LoginScreen.routeName);
           } else if (state.status == AuthStatus.authenticated) {
-            return NavScreen();
+            return Navigator.of(context).pushNamed(NavScreen.routeName);
           }
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
         },
+        child: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
       ),
     );
   }
 }
-
-// @override
-//   Widget build(BuildContext context) {
-//     return WillPopScope(
-//       onWillPop: () async =>
-//           false, //Restricts the Users ability to pop the screen
-//       child: BlocListener<AuthBloc, AuthState>(
-//         // Prevent listener from triggering if status did not change
-//         listenWhen: (previousState, currentState) =>
-//             previousState.status != currentState.status,
-//         listener: (context, state) {
-//           if (state.status == AuthStatus.unauthenticated) {
-//             return Navigator.of(context).pushNamed(LoginScreen.routeName);
-//           } else if (state.status == AuthStatus.authenticated) {
-//             return Navigator.of(context).pushNamed(NavScreen.routeName);
-//           }
-//         },
-//         child: Scaffold(
-//           body: Center(
-//             child: CircularProgressIndicator(),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
