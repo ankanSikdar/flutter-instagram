@@ -37,11 +37,6 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
     }
-    
-    dependencies {
-
-        implementation 'com.android.support:multidex:1.0.3'
-    }
 
     buildTypes {
         release {
@@ -69,4 +64,5 @@ dependencies {
   implementation 'com.google.firebase:firebase-auth'
   implementation 'com.google.firebase:firebase-firestore'
   implementation 'com.google.firebase:firebase-storage'
+  implementation 'com.android.support:multidex:1.0.3'
 }
