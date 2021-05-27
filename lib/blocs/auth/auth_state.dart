@@ -8,7 +8,7 @@ class AuthState extends Equatable {
 
   AuthState({
     this.user,
-    this.status,
+    this.status = AuthStatus.unknown,
   });
 
   factory AuthState.unkown() => AuthState();
