@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/blocs/blocs.dart';
+import 'package:instagram_clone/blocs/simple_bloc_observer.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 
 import 'config/custom_router.dart';
@@ -10,6 +11,7 @@ import 'screens/screens.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Bloc.observer = SimpleBlocObserver();
   runApp(MyApp());
 }
 
