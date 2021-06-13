@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
-import 'package:instagram_clone/screens/login/cubit/login_cubit.dart';
-import 'package:instagram_clone/screens/screens.dart';
+import 'package:instagram_clone/screens/signup/cubit/signup_cubit.dart';
 
-class LoginScreen extends StatelessWidget {
-  static const routeName = "/login";
+class SignUpScreen extends StatelessWidget {
+  static const routeName = "/SignUp";
 
   static Route route() {
-    return PageRouteBuilder(
+    return MaterialPageRoute(
       settings: RouteSettings(name: routeName),
-      transitionDuration: Duration(seconds: 0),
-      pageBuilder: (context, _, __) => BlocProvider<LoginCubit>(
-        create: (_) => LoginCubit(
+      builder: (context) => BlocProvider<SignUpCubit>(
+        create: (_) => SignUpCubit(
           authRepository: context.read<AuthRepository>(),
         ),
-        child: LoginScreen(),
+        child: SignUpScreen(),
       ),
     );
   }
@@ -26,7 +24,7 @@ class LoginScreen extends StatelessWidget {
 
     void _submitForm(BuildContext context, bool isSubmitting) {
       if (_fromKey.currentState.validate() && !isSubmitting) {
-        context.read<LoginCubit>().loginWithCredentials();
+        context.read<SignUpCubit>().signUpWithCredentials();
       }
     }
 
@@ -34,9 +32,9 @@ class LoginScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: BlocConsumer<LoginCubit, LoginState>(
+        child: BlocConsumer<SignUpCubit, SignUpState>(
           listener: (context, state) {
-            if (state.status == LoginStatus.error) {
+            if (state.status == SignUpStatus.error) {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -50,7 +48,7 @@ class LoginScreen extends StatelessWidget {
             return Scaffold(
               resizeToAvoidBottomInset: false,
               body: Center(
-                child: state.status == LoginStatus.submitting
+                child: state.status == SignUpStatus.submitting
                     ? CircularProgressIndicator()
                     : Padding(
                         padding: EdgeInsets.all(24.0),
@@ -76,6 +74,22 @@ class LoginScreen extends StatelessWidget {
                                   SizedBox(height: 12.0),
                                   TextFormField(
                                     decoration:
+                                        InputDecoration(hintText: 'Username'),
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'Username cannot be empty';
+                                      } else if (value.contains(' ')) {
+                                        return 'Username must not contain whitespace';
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) => context
+                                        .read<SignUpCubit>()
+                                        .usernameChanged(value),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                  TextFormField(
+                                    decoration:
                                         InputDecoration(hintText: 'Email'),
                                     keyboardType: TextInputType.emailAddress,
                                     validator: (value) {
@@ -89,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                                       return null;
                                     },
                                     onChanged: (value) => context
-                                        .read<LoginCubit>()
+                                        .read<SignUpCubit>()
                                         .emailChanged(value),
                                   ),
                                   SizedBox(height: 16.0),
@@ -108,7 +122,7 @@ class LoginScreen extends StatelessWidget {
                                       return null;
                                     },
                                     onChanged: (value) => context
-                                        .read<LoginCubit>()
+                                        .read<SignUpCubit>()
                                         .passwordChanged(value),
                                   ),
                                   SizedBox(height: 28.0),
@@ -117,16 +131,15 @@ class LoginScreen extends StatelessWidget {
                                         _submitForm(
                                             context,
                                             state.status ==
-                                                LoginStatus.submitting);
+                                                SignUpStatus.submitting);
                                       },
-                                      child: Text('Login')),
+                                      child: Text('SignUp')),
                                   SizedBox(height: 12.0),
                                   OutlinedButton(
                                       onPressed: () {
-                                        Navigator.pushNamed(
-                                            context, SignUpScreen.routeName);
+                                        Navigator.pop(context);
                                       },
-                                      child: Text('No account? Sign Up')),
+                                      child: Text('Click here to Login!')),
                                 ],
                               ),
                             ),
