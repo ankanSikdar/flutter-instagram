@@ -52,6 +52,16 @@ class NavScreen extends StatelessWidget {
     context.read<BottomNavBarCubit>().updateSelectedItem(selectedItem);
   }
 
+  Widget _buildOffStageNavigator({BottomNavItem currentItem, bool isSelected}) {
+    return Offstage(
+      offstage: !isSelected, // Hides child when true, Shows child when false
+      child: TabNavigator(
+        item: currentItem,
+        navigatorKey: navigatorKey[currentItem],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -59,6 +69,24 @@ class NavScreen extends StatelessWidget {
       child: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
         builder: (context, state) {
           return Scaffold(
+            /*
+            Stack so we can render all the screens and make sure we save the
+            current navigation state for each of the screens
+            */
+            body: Stack(
+              children: items
+                  .map(
+                    (item, icon) => MapEntry(
+                      item,
+                      _buildOffStageNavigator(
+                        currentItem: item,
+                        isSelected: item == state.selectedItem,
+                      ),
+                    ),
+                  )
+                  .values
+                  .toList(),
+            ),
             bottomNavigationBar: BottomNavBar(
               items: items,
               selectedItem: state.selectedItem,
