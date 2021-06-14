@@ -18,6 +18,18 @@ class NavScreen extends StatelessWidget {
     );
   }
 
+  /* 
+  Defining Navigator Keys to maintain the current Navigator State for 
+  each one of our bottom Nav Items
+  */
+  final Map<BottomNavItem, GlobalKey<NavigatorState>> navigatorKey = {
+    BottomNavItem.feed: GlobalKey<NavigatorState>(),
+    BottomNavItem.search: GlobalKey<NavigatorState>(),
+    BottomNavItem.create: GlobalKey<NavigatorState>(),
+    BottomNavItem.notifications: GlobalKey<NavigatorState>(),
+    BottomNavItem.profile: GlobalKey<NavigatorState>(),
+  };
+
   final Map<BottomNavItem, IconData> items = {
     BottomNavItem.feed: Icons.home,
     BottomNavItem.search: Icons.search_outlined,
@@ -25,6 +37,20 @@ class NavScreen extends StatelessWidget {
     BottomNavItem.notifications: Icons.notifications,
     BottomNavItem.profile: Icons.account_circle_outlined,
   };
+
+  void _selectBottomNavItem(
+      {BuildContext context, BottomNavItem selectedItem, bool isSameItem}) {
+    if (isSameItem) {
+      /* 
+      If the user taps on the currently selected Item then we pop them back 
+      to the first route in the navigation stack
+      */
+      navigatorKey[selectedItem]
+          .currentState
+          .popUntil((route) => route.isFirst);
+    }
+    context.read<BottomNavBarCubit>().updateSelectedItem(selectedItem);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +64,11 @@ class NavScreen extends StatelessWidget {
               selectedItem: state.selectedItem,
               onTap: (index) {
                 final selectedItem = BottomNavItem.values[index];
-                context
-                    .read<BottomNavBarCubit>()
-                    .updateSelectedItem(selectedItem);
+                _selectBottomNavItem(
+                  context: context,
+                  selectedItem: selectedItem,
+                  isSameItem: selectedItem == state.selectedItem,
+                );
               },
             ),
           );
