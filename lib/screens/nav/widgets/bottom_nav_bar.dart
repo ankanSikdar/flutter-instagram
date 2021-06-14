@@ -23,6 +23,7 @@ class BottomNavBar extends StatelessWidget {
       selectedItemColor: Theme.of(context).primaryColor,
       unselectedItemColor: Colors.grey,
       currentIndex: BottomNavItem.values.indexOf(selectedItem),
+      onTap: onTap,
       items: items
           .map(
             (item, icon) => MapEntry(
