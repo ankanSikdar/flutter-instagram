@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/login/cubit/login_cubit.dart';
 import 'package:instagram_clone/screens/screens.dart';
+import 'package:instagram_clone/widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = "/login";
@@ -39,9 +40,8 @@ class LoginScreen extends StatelessWidget {
             if (state.status == LoginStatus.error) {
               showDialog(
                 context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Error'),
-                  content: Text(state.failure.message),
+                builder: (context) => ErrorDialog(
+                  content: state.failure.message,
                 ),
               );
             }
