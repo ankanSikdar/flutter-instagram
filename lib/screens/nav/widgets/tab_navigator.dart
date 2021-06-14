@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/config/custom_router.dart';
 
 import 'package:instagram_clone/enums/enums.dart';
 import 'package:instagram_clone/screens/feed/feed_screen.dart';
@@ -54,6 +55,7 @@ class TabNavigator extends StatelessWidget {
               builder: (context) => routeBuilders[initialRoute](context))
         ];
       },
+      onGenerateRoute: CustomRouter.onGenerateNestedRoute,
     );
   }
 }
