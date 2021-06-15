@@ -10,7 +10,7 @@ abstract class ProfileEvent extends Equatable {
 class ProfileLoadUser extends ProfileEvent {
   final String userId;
 
-  const ProfileLoadUser({this.userId});
+  const ProfileLoadUser({@required this.userId});
 
   @override
   List<Object> get props => [userId];
