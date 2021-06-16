@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:instagram_clone/helpers/helpers.dart';
 import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/edit_profile/cubit/edit_profile_cubit.dart';
@@ -40,6 +44,17 @@ class EditProfile extends StatelessWidget {
     }
   }
 
+  void _selectProfileImageUrl(BuildContext context) async {
+    final pickedFile = await ImageHelper.pickImageFromGallery(
+      context: context,
+      cropStyle: CropStyle.circle,
+      title: 'Profile Image',
+    );
+    if (pickedFile != null) {
+      context.read<EditProfileCubit>().profileImageChanged(pickedFile);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -69,7 +84,9 @@ class EditProfile extends StatelessWidget {
                     LinearProgressIndicator(),
                   SizedBox(height: 32.0),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _selectProfileImageUrl(context);
+                    },
                     child: UserProfileImage(
                       radius: 80.0,
                       profileImageUrl: user.profileImageUrl,
