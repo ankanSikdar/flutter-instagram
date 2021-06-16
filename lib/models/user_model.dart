@@ -53,7 +53,7 @@ class User extends Equatable {
       profileImageUrl: data['profileImageUrl'] ?? '',
       followers: (data['followers'] ?? 0).toInt(),
       following: (data['following'] ?? 0).toInt(),
-      bio: data['email'] ?? '',
+      bio: data['bio'] ?? '',
     );
   }
 
