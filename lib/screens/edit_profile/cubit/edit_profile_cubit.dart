@@ -51,7 +51,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       final user = _profileBloc.state.user;
 
       var profileImageUrl = user.profileImageUrl;
-      if (profileImageUrl != null && profileImageUrl.isNotEmpty) {
+      if (state.profileImage != null) {
         profileImageUrl = await _storageRepository.uploadProfileImage(
           image: state.profileImage,
           url: profileImageUrl,
