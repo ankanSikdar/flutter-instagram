@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';
+import 'package:instagram_clone/screens/profile/widgets/profile_stats.dart';
 import 'package:instagram_clone/widgets/user_profile_image.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -33,6 +34,13 @@ class ProfileScreen extends StatelessWidget {
                       UserProfileImage(
                         radius: 40.0,
                         profileImageUrl: state.user.profileImageUrl,
+                      ),
+                      ProfileStats(
+                        isCurrentUser: state.isCurrentUser,
+                        isFollowing: state.isFollowing,
+                        posts: 0, // state.posts.length
+                        followers: state.user.followers,
+                        following: state.user.following,
                       ),
                     ],
                   ),
