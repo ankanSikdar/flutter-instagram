@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:instagram_clone/blocs/blocs.dart';
 import 'package:instagram_clone/models/models.dart';
-import 'package:instagram_clone/models/user_model.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:meta/meta.dart';
 

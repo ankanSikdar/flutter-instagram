@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:instagram_clone/helpers/helpers.dart';
-import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/models/models.dart';
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';

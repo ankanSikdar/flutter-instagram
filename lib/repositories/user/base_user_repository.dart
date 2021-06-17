@@ -1,4 +1,4 @@
-import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/models/models.dart';
 import 'package:meta/meta.dart';
 
 abstract class BaseUserRepository {

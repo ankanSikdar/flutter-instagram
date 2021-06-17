@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:instagram_clone/config/paths.dart';
-import 'package:instagram_clone/models/user_model.dart';
+import 'package:instagram_clone/models/models.dart';
 import 'package:instagram_clone/repositories/user/base_user_repository.dart';
 
 class UserRepository extends BaseUserRepository {
