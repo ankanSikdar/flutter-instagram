@@ -10,6 +10,8 @@ import 'package:instagram_clone/screens/profile/widgets/profile_stats.dart';
 import 'package:instagram_clone/widgets/error_dialog.dart';
 import 'package:instagram_clone/widgets/user_profile_image.dart';
 
+import 'widgets/post_view.dart';
+
 class ProfileScreenArgs {
   final String userId;
   ProfileScreenArgs({
@@ -158,11 +160,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 final post = state.posts[index];
-                                return Container(
-                                  margin: EdgeInsets.all(10),
-                                  height: 100.0,
-                                  width: double.infinity,
-                                  color: Colors.red,
+                                return PostView(
+                                  post: post,
+                                  isLiked: false,
                                 );
                               },
                               childCount: state.posts.length,
