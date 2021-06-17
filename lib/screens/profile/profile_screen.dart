@@ -12,7 +12,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileBloc, ProfileState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        print('Post Count: ${state.posts.length}');
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
