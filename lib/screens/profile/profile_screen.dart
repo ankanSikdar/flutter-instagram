@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_clone/blocs/auth/auth_bloc.dart';
+
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';
 import 'package:instagram_clone/screens/profile/widgets/profile_info.dart';
@@ -8,8 +10,29 @@ import 'package:instagram_clone/screens/profile/widgets/profile_stats.dart';
 import 'package:instagram_clone/widgets/error_dialog.dart';
 import 'package:instagram_clone/widgets/user_profile_image.dart';
 
+class ProfileScreenArgs {
+  final String userId;
+  ProfileScreenArgs({
+    @required this.userId,
+  });
+}
+
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
+
+  static Route route({@required ProfileScreenArgs args}) {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: routeName),
+      builder: (context) => BlocProvider<ProfileBloc>(
+        create: (_) => ProfileBloc(
+          userRepository: context.read<UserRepository>(),
+          postRepository: context.read<PostRepository>(),
+          authBloc: context.read<AuthBloc>(),
+        )..add(ProfileLoadUser(userId: args.userId)),
+        child: ProfileScreen(),
+      ),
+    );
+  }
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -82,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 30.0,
+                              horizontal: 12.0,
                               vertical: 10.0,
                             ),
                             child: ProfileInfo(
