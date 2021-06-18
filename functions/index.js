@@ -117,3 +117,33 @@ exports.onCreatePost = functions.firestore
         .set(snapshot.data());
     });
   });
+
+exports.onUpdatePost = functions.firestore
+  .document("/posts/{postId}")
+  .onUpdate(async (snapshot, context) => {
+    const postId = context.params.postId;
+
+    //Get author id
+    const authorRef = snapshot.after.get("author");
+    const authorId = authorRef.path.split("/")[1];
+
+    //Update post data in each follower's feed
+    const updatedPostData = snapshot.after.data();
+    const userFollowersRef = admin
+      .firestore()
+      .collection("followers")
+      .doc(authorId)
+      .collection("userFollowers");
+    const userFollowerSnapshot = await userFollowersRef.get();
+    userFollowerSnapshot.forEach(async (doc) => {
+      const postRef = admin
+        .firestore()
+        .collection("feeds")
+        .doc(doc.id)
+        .collection("userFeed");
+      const postDoc = await postRef.doc(postId).get();
+      if (postDoc.exists) {
+        postDoc.ref.update(updatedPostData);
+      }
+    });
+  });
