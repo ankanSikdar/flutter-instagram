@@ -32,4 +32,55 @@ class UserRepository extends BaseUserRepository {
         .get();
     return userSnap.docs.map((doc) => User.fromDocument(doc)).toList();
   }
+
+  @override
+  void followUser({String userId, String followUserId}) {
+    // Add followUser to user's userFollowing
+    _firebaseFirestore
+        .collection(Paths.following)
+        .doc(userId)
+        .collection(Paths.userFollowing)
+        .doc(followUserId)
+        .set({});
+
+    // Add user to followusers userFollowers
+    _firebaseFirestore
+        .collection(Paths.followers)
+        .doc(followUserId)
+        .collection(Paths.userFollowers)
+        .doc(userId)
+        .set({});
+  }
+
+  @override
+  void unfollowUser({String userId, String unfollowUserId}) {
+    // Remove followUser from user's userFollowing
+    _firebaseFirestore
+        .collection(Paths.following)
+        .doc(userId)
+        .collection(Paths.userFollowing)
+        .doc(unfollowUserId)
+        .delete();
+
+    // Remove user from followusers userFollowers
+    _firebaseFirestore
+        .collection(Paths.followers)
+        .doc(unfollowUserId)
+        .collection(Paths.userFollowers)
+        .doc(userId)
+        .delete();
+  }
+
+  @override
+  Future<bool> isFollowing({String userId, String otherUserId}) async {
+    // is otherUser in user's following
+
+    final otherUserDoc = await _firebaseFirestore
+        .collection(Paths.following)
+        .doc(userId)
+        .collection(Paths.userFollowing)
+        .doc(otherUserId)
+        .get();
+    return otherUserDoc.exists;
+  }
 }
