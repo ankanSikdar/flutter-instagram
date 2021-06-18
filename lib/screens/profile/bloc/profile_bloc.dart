@@ -55,6 +55,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       final user = await _userRepository.getUserWithId(userId: event.userId);
       final isCurrentUser = _authBloc.state.user.uid == event.userId;
+      final isFollowing = await _userRepository.isFollowing(
+        userId: _authBloc.state.user.uid,
+        otherUserId: event.userId,
+      );
 
       _postsSubscription?.cancel();
       _postsSubscription = _postRepository
@@ -68,6 +72,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         user: user,
         status: ProfileStatus.loaded,
         isCurrentUser: isCurrentUser,
+        isFollowing: isFollowing,
       );
     } catch (error) {
       yield state.copyWith(

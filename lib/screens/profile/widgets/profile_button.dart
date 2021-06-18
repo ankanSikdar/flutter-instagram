@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';
 import 'package:instagram_clone/screens/screens.dart';
 
 class ProfileButton extends StatelessWidget {
@@ -28,14 +30,18 @@ class ProfileButton extends StatelessWidget {
           )
         : isFollowing
             ? OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<ProfileBloc>().add(ProfileUnfollowUser());
+                },
                 child: Text(
                   'Unfollow',
                   style: TextStyle(fontSize: 16.0),
                 ),
               )
             : ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<ProfileBloc>().add(ProfileFollowUser());
+                },
                 child: Text(
                   'Follow',
                   style: TextStyle(fontSize: 16.0),
