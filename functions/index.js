@@ -89,3 +89,31 @@ exports.onUnfollowUser = functions.firestore
       }
     });
   });
+
+exports.onCreatePost = functions.firestore
+  .document("/posts/{postId}")
+  .onCreate(async (snapshot, context) => {
+    const postId = context.params.postId;
+
+    // Getting author id
+    const authorRef = snapshot.get("author");
+    const authorId = authorRef.path.split("/")[1];
+
+    //Add new post to feed of all followers
+    const userFollowRef = admin
+      .firestore()
+      .collection("followers")
+      .doc(authorId)
+      .collection("userFollowers");
+
+    const userFollowersSnapshots = await userFollowRef.get();
+    userFollowersSnapshots.forEach((doc) => {
+      admin
+        .firestore()
+        .collection("feeds")
+        .doc(doc.id)
+        .collection("userFeed")
+        .doc(postId)
+        .set(snapshot.data());
+    });
+  });
