@@ -26,6 +26,21 @@ class PostRepository extends BasePostRepository {
   }
 
   @override
+  void createLike({String userId, Post post}) {
+    _firebaseFirestore
+        .collection(Paths.posts)
+        .doc(post.id)
+        .update({'likes': FieldValue.increment(1)});
+
+    _firebaseFirestore
+        .collection(Paths.likes)
+        .doc(post.id)
+        .collection(Paths.postLikes)
+        .doc(userId)
+        .set({});
+  }
+
+  @override
   Stream<List<Future<Post>>> getUserPosts({@required String userId}) {
     final authorRef = _firebaseFirestore.collection(Paths.users).doc(userId);
     return _firebaseFirestore
@@ -85,5 +100,40 @@ class PostRepository extends BasePostRepository {
       postSnapshot.docs.map((doc) => Post.fromDocument(doc)).toList(),
     );
     return posts;
+  }
+
+  @override
+  Future<Set<String>> getLikedPostIds({
+    @required String userId,
+    @required List<Post> posts,
+  }) async {
+    final postIds = <String>{};
+    for (final post in posts) {
+      final likeDoc = await _firebaseFirestore
+          .collection(Paths.likes)
+          .doc(post.id)
+          .collection(Paths.postLikes)
+          .doc(userId)
+          .get();
+      if (likeDoc.exists) {
+        postIds.add(post.id);
+      }
+    }
+    return postIds;
+  }
+
+  @override
+  void deleteLike({String userId, String postId}) {
+    _firebaseFirestore
+        .collection(Paths.posts)
+        .doc(postId)
+        .update({'likes': FieldValue.increment(-1)});
+
+    _firebaseFirestore
+        .collection(Paths.likes)
+        .doc(postId)
+        .collection(Paths.postLikes)
+        .doc(userId)
+        .delete();
   }
 }
