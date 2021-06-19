@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram_clone/blocs/auth/auth_bloc.dart';
+import 'package:instagram_clone/cubits/cubits.dart';
 
 import 'package:instagram_clone/repositories/repositories.dart';
 import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';
@@ -29,6 +30,7 @@ class ProfileScreen extends StatefulWidget {
         create: (_) => ProfileBloc(
           userRepository: context.read<UserRepository>(),
           postRepository: context.read<PostRepository>(),
+          likedPostsCubit: context.read<LikedPostsCubit>(),
           authBloc: context.read<AuthBloc>(),
         )..add(ProfileLoadUser(userId: args.userId)),
         child: ProfileScreen(),
@@ -160,9 +162,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 final post = state.posts[index];
+                                final likedPostState =
+                                    context.watch<LikedPostsCubit>().state;
+                                final isLiked = likedPostState.likedPostIds
+                                    .contains(post.id);
                                 return PostView(
                                   post: post,
-                                  isLiked: false,
+                                  isLiked: isLiked,
+                                  onLike: () {
+                                    if (isLiked) {
+                                      context
+                                          .read<LikedPostsCubit>()
+                                          .unlikePost(post: post);
+                                    } else {
+                                      context
+                                          .read<LikedPostsCubit>()
+                                          .likePost(post: post);
+                                    }
+                                  },
                                 );
                               },
                               childCount: state.posts.length,
@@ -182,6 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   icon: Icon(Icons.logout),
                   onPressed: () {
                     context.read<AuthRepository>().logOut();
+                    context.read<LikedPostsCubit>().clearAllLikedPost();
                   })
             ],
           ),

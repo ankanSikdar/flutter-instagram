@@ -9,11 +9,15 @@ import 'package:instagram_clone/extensions/datetime_extension.dart';
 class PostView extends StatelessWidget {
   final Post post;
   final bool isLiked;
+  final VoidCallback onLike;
+  final bool recentlyLiked;
 
   const PostView({
     Key key,
     @required this.post,
     @required this.isLiked,
+    @required this.onLike,
+    this.recentlyLiked = false,
   }) : super(key: key);
 
   @override
@@ -46,9 +50,7 @@ class PostView extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onDoubleTap: () {
-            // Like Post
-          },
+          onDoubleTap: onLike,
           child: CachedNetworkImage(
             height: MediaQuery.of(context).size.height / 2.25,
             width: double.infinity,
@@ -67,7 +69,7 @@ class PostView extends StatelessWidget {
                   : Icon(
                       Icons.favorite_outline_rounded,
                     ),
-              onPressed: () {},
+              onPressed: onLike,
             ),
             IconButton(
               icon: Icon(Icons.comment_outlined),
@@ -81,7 +83,7 @@ class PostView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                '${post.likes} likes',
+                '${recentlyLiked ? post.likes + 1 : post.likes} likes',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16.0,
