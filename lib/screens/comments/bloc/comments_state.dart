@@ -1,6 +1,6 @@
 part of 'comments_bloc.dart';
 
-enum CommentStatus { initial, loading, loaded, sunmitting, error }
+enum CommentStatus { initial, loading, loaded, submitting, error }
 
 class CommentsState extends Equatable {
   final Post post;

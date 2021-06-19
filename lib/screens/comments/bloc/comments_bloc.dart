@@ -70,7 +70,7 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
 
   Stream<CommentsState> _mapCommentsPostCommentToState(
       CommentsPostComment event) async* {
-    yield state.copyWith(status: CommentStatus.sunmitting);
+    yield state.copyWith(status: CommentStatus.submitting);
     try {
       final author = User.empty.copyWith(id: _authBloc.state.user.uid);
       final comment = Comment(

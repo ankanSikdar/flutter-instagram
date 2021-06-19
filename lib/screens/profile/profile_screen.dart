@@ -5,6 +5,7 @@ import 'package:instagram_clone/blocs/auth/auth_bloc.dart';
 import 'package:instagram_clone/cubits/cubits.dart';
 
 import 'package:instagram_clone/repositories/repositories.dart';
+import 'package:instagram_clone/screens/comments/comments_screen.dart';
 import 'package:instagram_clone/screens/profile/bloc/profile_bloc.dart';
 import 'package:instagram_clone/screens/profile/widgets/profile_info.dart';
 import 'package:instagram_clone/screens/profile/widgets/profile_stats.dart';
@@ -148,7 +149,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                               (context, index) {
                                 final post = state.posts[index];
                                 return GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                      CommentsScreen.routeName,
+                                      arguments: CommentsScreenArgs(post: post),
+                                    );
+                                  },
                                   child: CachedNetworkImage(
                                     imageUrl: post.imageUrl,
                                     fit: BoxFit.cover,
