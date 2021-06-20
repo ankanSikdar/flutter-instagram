@@ -4,6 +4,7 @@ import 'package:instagram_clone/enums/enums.dart';
 import 'package:instagram_clone/models/notif_model.dart';
 import 'package:instagram_clone/screens/screens.dart';
 import 'package:instagram_clone/widgets/user_profile_image.dart';
+import 'package:instagram_clone/extensions/datetime_extension.dart';
 
 class NotificationTile extends StatelessWidget {
   final Notif notificaiton;
@@ -75,6 +76,13 @@ class NotificationTile extends StatelessWidget {
         ),
       ),
       trailing: _getTrailing(context, notificaiton),
+      subtitle: Text(
+        notificaiton.date.timeAgo(),
+        style: TextStyle(
+          color: Colors.grey[600],
+          fontWeight: FontWeight.w500,
+        ),
+      ),
       onTap: () {
         Navigator.of(context).pushNamed(
           ProfileScreen.routeName,
