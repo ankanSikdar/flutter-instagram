@@ -27,18 +27,20 @@ class PostRepository extends BasePostRepository {
         .collection(Paths.postComments)
         .add(comment.toDocument());
 
-    final notifications = Notif(
-      type: NotifType.comment,
-      post: post,
-      fromUser: comment.author,
-      date: DateTime.now(),
-    );
+    if (post.author.id != comment.author.id) {
+      final notifications = Notif(
+        type: NotifType.comment,
+        post: post,
+        fromUser: comment.author,
+        date: DateTime.now(),
+      );
 
-    _firebaseFirestore
-        .collection(Paths.notifications)
-        .doc(post.author.id)
-        .collection(Paths.userNotifications)
-        .add(notifications.toDocument());
+      _firebaseFirestore
+          .collection(Paths.notifications)
+          .doc(post.author.id)
+          .collection(Paths.userNotifications)
+          .add(notifications.toDocument());
+    }
   }
 
   @override
@@ -55,18 +57,20 @@ class PostRepository extends BasePostRepository {
         .doc(userId)
         .set({});
 
-    final notifications = Notif(
-      type: NotifType.like,
-      post: post,
-      fromUser: User.empty.copyWith(id: userId),
-      date: DateTime.now(),
-    );
+    if (post.author.id != userId) {
+      final notifications = Notif(
+        type: NotifType.like,
+        post: post,
+        fromUser: User.empty.copyWith(id: userId),
+        date: DateTime.now(),
+      );
 
-    _firebaseFirestore
-        .collection(Paths.notifications)
-        .doc(post.author.id)
-        .collection(Paths.userNotifications)
-        .add(notifications.toDocument());
+      _firebaseFirestore
+          .collection(Paths.notifications)
+          .doc(post.author.id)
+          .collection(Paths.userNotifications)
+          .add(notifications.toDocument());
+    }
   }
 
   @override
