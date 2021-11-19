@@ -199,7 +199,10 @@ class _ProfileScreenState extends State<ProfileScreen>
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(state.user.username),
+            title: Text(
+              state.user.username,
+              style: TextStyle(color: Theme.of(context).primaryColorDark),
+            ),
             actions: [
               IconButton(
                   icon: Icon(Icons.logout),

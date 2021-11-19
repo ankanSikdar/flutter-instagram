@@ -43,7 +43,10 @@ class CreatePostScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Create Post'),
+          title: Text(
+            'Create Post',
+            style: TextStyle(color: Theme.of(context).primaryColorDark),
+          ),
         ),
         body: BlocConsumer<CreatePostCubit, CreatePostState>(
           listener: (context, state) {

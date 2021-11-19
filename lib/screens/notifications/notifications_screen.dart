@@ -12,7 +12,10 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: Text(
+          'Notifications',
+          style: TextStyle(color: Theme.of(context).primaryColorDark),
+        ),
       ),
       body: BlocBuilder<NotificationsBloc, NotificationsState>(
         builder: (context, state) {
